@@ -17,3 +17,7 @@ cucumber-report
 
 .nx
 /update.sh
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
