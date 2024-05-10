@@ -1,16 +1,18 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
-// import dotenv from 'dotenv';
-
-// Read environment variables from a `.env` file (uncomment if needed).
-// dotenv.config();
 
 const testDir = defineBddConfig({
-    importTestFrom: 'tests/fixtures/fixture.js',
-    paths: ['tests/features/**/*.feature'],
-    require: ['tests/steps/**/*.js']
-});
+  importTestFrom: 'tests/fixtures/fixture.js',
+  paths: ['tests/features/**/*.feature'],
+  require: ['tests/steps/**/*.js']
+})
+
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// require('dotenv').config();
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -44,15 +46,18 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
     // },
+
     // {
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
     // },
-    // Additional projects are commented out here, like:
+
+    /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
     //   use: { ...devices['Pixel 5'] },
@@ -60,6 +65,16 @@ export default defineConfig({
     // {
     //   name: 'Mobile Safari',
     //   use: { ...devices['iPhone 12'] },
+    // },
+
+    /* Test against branded browsers. */
+    // {
+    //   name: 'Microsoft Edge',
+    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    // },
+    // {
+    //   name: 'Google Chrome',
+    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
   ],
 
@@ -70,3 +85,4 @@ export default defineConfig({
   //   reuseExistingServer: !process.env.CI,
   // },
 });
+

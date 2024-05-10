@@ -1,21 +1,21 @@
 export const locators = {
     login: {
         userNameField: {
-            locator: 'username',
+            locator: '#username',
             type: 'id'
         },
         passwordField: {
-            locator: 'type=password',
-            type: 'css'
+            locator: '#password',
+            type: 'id'
         },
         loginButton: {
-            locator: 'type=submit',
+            locator: '[type="submit"]',
             type: 'css'
         },
     },
     secure: {
         SecureAreaText: {
-            locator: 'h2',
+            locator: '//h2',
             type: 'xpath'
         }
     }

@@ -7,13 +7,13 @@ const { Given, When, Then } = createBdd(test);
 let pageName
 
 Given('I am a {string} user', async ({ loginPage }, userType) => {
-    userName  = await loginPage.getUserName(userType)
-    userPassword  = await loginPage.getUserPassword(userType)
+    await loginPage.page.pause()
+    await loginPage.getUserName(userType)
+    await loginPage.getUserPassword(userType)
 });
 
 When('I navigate to {string} page', async ({ loginPage }, route) => {
-    this.pageName = route;
-    pageName = await this.pageName;
+    pageName = route;
     await loginPage.goToPage(pageName)
 });
 

@@ -1,7 +1,7 @@
 // BasePage.js
-import { test } from '@playwright/test';
 import { locators } from '../locators/locators';
 import { users } from '../config/users';
+import { expect } from "@playwright/test";
 
 class BasePage {
     constructor(page) {
@@ -9,11 +9,11 @@ class BasePage {
     }
 
     async getUserName(userType) {
-        this.userName = users[userType][username];
+        this.userName = users[userType].username;
     }
 
-    async getUsePassword(userType) {
-        this.userPassword = users[userType][password];
+    async getUserPassword(userType) {
+        this.userPassword = users[userType].password;
     }
 
     async eneterUserName() {
