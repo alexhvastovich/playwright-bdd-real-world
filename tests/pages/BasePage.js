@@ -1,35 +1,51 @@
 // BasePage.js
-import { expect } from '@playwright/test';
+import { test } from '@playwright/test';
+import { locators } from '../locators/locators';
+import { users } from '../config/users';
 
 class BasePage {
-    constructor(browser) {
-        this.browser = browser;
-        this.context = null;
-        this.page = null;
+    constructor(page) {
+        this.page = page
     }
 
-    // Initialize the browser context and the main page
-    async init() {
-        this.context = await this.browser.newContext(); // Create a new browser context
-        this.page = await this.context.newPage(); // Create a new page in that context
+    async getUserName(userType) {
+        this.userName = users[userType][username];
     }
 
-    // Close the current context and clean up resources
-    async close() {
-        if (this.context) {
-            await this.context.close(); // Close all pages in the context
+    async getUsePassword(userType) {
+        this.userPassword = users[userType][password];
+    }
+
+    async eneterUserName() {
+        await this.page.fill(locators.login.userNameField.locator, this.userName)
+    }
+
+    async enterPassword() {
+        await this.page.fill(locators.login.passwordField.locator, this.userPassword)
+    }
+
+    async goToPage(relativeUrl) {
+        await this.page.pause()
+        await this.page.goto('/' + relativeUrl);
+    }
+
+    async getElement(locator, pageName) {
+        let element = await locators[pageName][locator].locator;
+        let type = await locators[pageName][locator].type;
+
+        switch (type) {
+            case 'id':
+                return await this.page.locator(`#${element}`);
+            case 'css':
+                return await this.page.locator(`css=${element}`);
+            default:
+                return await this.page.locator(`xpath=${element}`);
         }
     }
 
-    // Go to a specific page using a relative URL
-    async goToPage(relativeUrl) {
-        await this.page.pause()
-        await this.page.goto(`https://the-internet.herokuapp.com/${relativeUrl}`);
-    }
-
-    // Click an element specified by a locator
-    async click(locator) {
-        await this.page.click(locator);
+    async clickOn(locator, pageName) {
+        let element = await this.getElement(locator, pageName);
+        await element.click();
     }
 
     // Fill an input field identified by a locator with a given value
@@ -37,20 +53,10 @@ class BasePage {
         await this.page.fill(locator, value);
     }
 
-    // Switch to a new page (or tab) that opens after clicking an element
-    async switchToNewPage(locator) {
-        const [newPage] = await Promise.all([
-            this.context.waitForEvent('page'), // Wait for any new page in the current context
-            this.page.click(locator) // Click the element that opens a new page
-        ]);
-        await newPage.waitForLoadState(); // Ensure the new page fully loads
-        this.page = newPage; // Update the main page to point to the newly opened page
-        return newPage;
-    }
-
     // Verify that an element's text matches the expected text
-    async assertElementText(locator, expectedText) {
-        await expect(this.page.locator(locator)).toHaveText(expectedText);
+    async assertElementText(locator, expectedText, pageName) {
+        let element = await this.getElement(locator, pageName);
+        await expect(element).toHaveText(expectedText);
     }
 
     // Verify that the page's title matches the expected title
