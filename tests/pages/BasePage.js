@@ -6,6 +6,8 @@ import { expect } from "@playwright/test";
 class BasePage {
     constructor(page) {
         this.page = page
+        this.pageName = ''
+        this.listenNavigation()
     }
 
     async getUserName(userType) {
@@ -29,9 +31,9 @@ class BasePage {
         await this.page.goto('/' + relativeUrl);
     }
 
-    async getElement(locator, pageName) {
-        let element = await locators[pageName][locator].locator;
-        let type = await locators[pageName][locator].type;
+    async getElement(locator) {
+        let element = locators[this.pageName][locator].locator;
+        let type = locators[this.pageName][locator].type;
 
         switch (type) {
             case 'id':
@@ -43,8 +45,8 @@ class BasePage {
         }
     }
 
-    async clickOn(locator, pageName) {
-        let element = await this.getElement(locator, pageName);
+    async clickOn(locator) {
+        let element = await this.getElement(locator);
         await element.click();
     }
 
@@ -54,8 +56,8 @@ class BasePage {
     }
 
     // Verify that an element's text matches the expected text
-    async assertElementText(locator, expectedText, pageName) {
-        let element = await this.getElement(locator, pageName);
+    async assertElementText(locator, expectedText) {
+        let element = await this.getElement(locator);
         await expect(element).toHaveText(expectedText);
     }
 
@@ -63,6 +65,19 @@ class BasePage {
     async assertPageTitle(expectedTitle) {
         const actualTitle = await this.page.title();
         expect(actualTitle).toBe(expectedTitle);
+    }
+
+    /**
+     * Listen page navigations and switch this.pageName according to url.
+     */
+    listenNavigation() {
+      this.page.on('request', (req) => {
+        if (req.isNavigationRequest()) {
+          console.log('Navigation to', req.url());
+          this.pageName = new URL(req.url()).pathname.slice(1);
+          console.log('PageName switched to', this.pageName);
+        }
+      });
     }
 }
 
