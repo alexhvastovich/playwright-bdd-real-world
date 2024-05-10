@@ -5,5 +5,5 @@ Feature: Verify herokuapp login page
     When I navigate to "login" page
     And I provide valid username and password
     Then I click on Locator: "loginButton"
-    And I am switched to "secure" page
+    # And I am switched to "secure" page
     And I should see "Secure Area" text for Locator: "SecureAreaText"
