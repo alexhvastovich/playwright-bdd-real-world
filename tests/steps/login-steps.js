@@ -27,7 +27,7 @@ Then('I click on Locator: {string}', async ({ loginPage }, locator) => {
     await loginPage.clickOn(locator, pageName);
 });
 
-Then('I am on switched to {string} page', async ({ loginPage }, route) => {
+Then('I am switched to {string} page', async ({ loginPage }, route) => {
     // switch context to new page
     // validate new link
     pageName = route;
