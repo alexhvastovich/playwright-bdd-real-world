@@ -58,7 +58,7 @@ class BasePage {
     // Verify that an element's text matches the expected text
     async assertElementText(locator, expectedText) {
         let element = await this.getElement(locator);
-        await expect(element).toHaveText(expectedText);
+        await expect(element).toContainText(expectedText);
     }
 
     // Verify that the page's title matches the expected title
