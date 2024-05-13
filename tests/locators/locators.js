@@ -18,6 +18,18 @@ export const locators = {
             locator: '//h2',
             type: 'xpath'
         }
+    },
+    windows: {
+        ClickHereLink: {
+            locator: '//a[text()="Click Here"]',
+            type: 'xpath'
+        }
+    },
+    'windows/new': {
+        Header: {
+            locator: 'h3',
+            type: 'css'
+        }
     }
 }
 

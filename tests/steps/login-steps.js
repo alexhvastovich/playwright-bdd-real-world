@@ -24,12 +24,9 @@ Then('I click on Locator: {string}', async ({ loginPage }, locator) => {
     await loginPage.clickOn(locator);
 });
 
-// vitalets: this step is not needed
-// Then('I am switched to {string} page', async ({ loginPage }, route) => {
-//     // switch context to new page
-//     // validate new link
-//     pageName = route;
-// });
+Then('I am switched to {string} page', async ({ loginPage }, pageName) => {
+    await loginPage.switchToPage(pageName);
+});
 
 Then('I should see {string} text for Locator: {string}', async ({ loginPage }, expectedMessage, locator) => {
     await loginPage.assertElementText(locator, expectedMessage);

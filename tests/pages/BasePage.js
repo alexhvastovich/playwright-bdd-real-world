@@ -74,11 +74,27 @@ class BasePage {
       this.page.on('request', (req) => {
         if (req.isNavigationRequest()) {
           console.log('Navigation to', req.url());
-          this.pageName = new URL(req.url()).pathname.slice(1);
+          this.pageName = getPageNameByUrl(req.url());
           console.log('PageName switched to', this.pageName);
         }
       });
     }
+
+    async switchToPage(pageName) {
+        const context = this.page.context();
+        await expect.poll(async () => {
+            const page = context.pages().find(page => getPageNameByUrl(page.url()) === pageName);
+            if (page) {
+                this.page = page;
+                this.pageName = pageName;
+                return true;
+            }
+        }).toBeTruthy();
+    }
+}
+
+function getPageNameByUrl(url) {
+    return new URL(url).pathname.replace(/^\/+/, '');
 }
 
 export default BasePage;
